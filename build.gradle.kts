@@ -96,18 +96,20 @@ tasks {
     create<Copy>("distJar") {
         from(shadowJar)
 
-        val fileName = "${project.name.capitalize()}.jar"
-        val pluginsDir = "W:\\Servers\\1.16.3\\plugins"
-        val updateDir = "$pluginsDir\\update"
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            val fileName = "${project.name.capitalize()}.jar"
+            val pluginsDir = "W:\\Servers\\1.16.3\\plugins"
+            val updateDir = "$pluginsDir\\update"
 
-        rename {
-            fileName
-        }
+            rename {
+                fileName
+            }
 
-        if (file("$pluginsDir\\$fileName").exists()) {
-            into(updateDir)
-        } else {
-            into(pluginsDir)
+            if (file("$pluginsDir\\$fileName").exists()) {
+                into(updateDir)
+            } else {
+                into(pluginsDir)
+            }
         }
     }
 }
@@ -177,4 +179,5 @@ try {
         sign(tasks["sourcesJar"], tasks["dokkaJar"], tasks["shadowJar"])
         sign(publishing.publications["twipe"])
     }
-} catch (ignored: MissingPropertyException) {}
+} catch (ignored: MissingPropertyException) {
+}
