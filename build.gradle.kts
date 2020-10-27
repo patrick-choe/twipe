@@ -34,7 +34,7 @@ plugins {
 }
 
 group = "com.github.patrick-mc"
-version = "1.0"
+version = "1.0.1"
 
 repositories {
     maven("https://repo.maven.apache.org/maven2/")
@@ -46,7 +46,6 @@ repositories {
 dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
     compileOnly("org.spigotmc:spigot-api:1.8-R0.1-SNAPSHOT")
-    compileOnly("com.google.code.gson:gson:2.8.6")
     implementation("com.neovisionaries:nv-websocket-client:2.10")
 }
 
@@ -96,7 +95,20 @@ tasks {
 
     create<Copy>("distJar") {
         from(shadowJar)
-        into("W:\\Servers\\1.16.3\\plugins\\update")
+
+        val fileName = "${project.name.capitalize()}.jar"
+        val pluginsDir = "W:\\Servers\\1.16.3\\plugins"
+        val updateDir = "$pluginsDir\\update"
+
+        rename {
+            fileName
+        }
+
+        if (file("$pluginsDir\\$fileName").exists()) {
+            into(updateDir)
+        } else {
+            into(pluginsDir)
+        }
     }
 }
 

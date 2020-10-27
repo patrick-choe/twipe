@@ -24,7 +24,6 @@ import com.github.patrick.twipe.event.AsyncTwipDonateEvent
 import com.github.patrick.twipe.plugin.TwipePlugin
 import com.github.patrick.twipe.plugin.TwipePlugin.Companion.timer
 import com.github.patrick.twipe.plugin.TwipePlugin.Companion.twipVersion
-import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import com.neovisionaries.ws.client.WebSocket
 import com.neovisionaries.ws.client.WebSocketAdapter
@@ -64,18 +63,20 @@ internal class TwipeSocketClient(streamer: String, key: String) {
         }.createSocket(twipAddress.format(key, twipVersion)).apply {
             addListener(object : WebSocketAdapter() {
                 override fun onConnected(websocket: WebSocket, headers: MutableMap<String, MutableList<String>>) {
-                    TwipePlugin.logger.info("Connected to twip - $streamer")
+                    TwipePlugin.twipeLogger.info("Connected to twip - $streamer")
                 }
 
                 override fun onDisconnected(websocket: WebSocket, serverCloseFrame: WebSocketFrame, clientCloseFrame: WebSocketFrame, closedByServer: Boolean) {
-                    TwipePlugin.logger.warning("Disconnected from Twip - $streamer")
+                    TwipePlugin.twipeLogger.warning("Disconnected from Twip - $streamer")
                     TwipeSocketClient(streamer, key)
                 }
 
                 override fun onTextMessage(websocket: WebSocket, text: String) {
                     when (text.substring(0, 1).toInt()) { // engine.io protocol
                         0 -> { // open
-                            val interval = parse(text.substring(1)).asJsonObject.getAsJsonPrimitive("pingInterval").asLong
+                            val json = parser.parse(text.substring(1)).asJsonObject
+                            val interval = json.getAsJsonPrimitive("pingInterval").asLong
+
                             timer.schedule(object : TimerTask() {
                                 override fun run() {
                                     websocket.sendText("2")
@@ -85,7 +86,7 @@ internal class TwipeSocketClient(streamer: String, key: String) {
                         4 -> { // message
                             when (text.substring(1, 2).toInt()) { // socket.io protocol
                                 2 -> { // event
-                                    val json = parse(text.substring(2)).asJsonArray
+                                    val json = parser.parse(text.substring(2)).asJsonArray
                                     when (json[0].asJsonPrimitive.asString) { // socket.io event
                                         "new donate" -> { // twip donation
                                             val donation = json[1].asJsonObject
@@ -109,19 +110,8 @@ internal class TwipeSocketClient(streamer: String, key: String) {
     private companion object {
         private const val twipAddress = "wss://io.mytwip.net/socket.io/?alertbox_key=%s&version=%s&transport=websocket"
 
-        @Suppress("DEPRECATION")
-        private fun parse(json: String): JsonElement {
-            return requireNotNull(if (newGson) {
-                JsonParser.parseString(json)
-            } else {
-                JsonParser().parse(json)
-            })
-        }
-
-        private val newGson by lazy {
-            JsonParser::class.java.constructors.any { constructor ->
-                constructor.getAnnotation(Deprecated::class.java) != null
-            }
+        private val parser by lazy {
+            JsonParser()
         }
     }
 }
