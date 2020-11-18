@@ -33,7 +33,7 @@ class TwipePlugin : JavaPlugin() {
      * Called on startup
      */
     override fun onLoad() {
-        twipeLogger = logger
+        TwipePlugin.logger = logger
         timer = Timer()
         saveDefaultConfig()
         twipVersion = requireNotNull(config.getString("twip-version"))
@@ -49,7 +49,7 @@ class TwipePlugin : JavaPlugin() {
     }
 
     internal companion object {
-        lateinit var twipeLogger: Logger
+        lateinit var logger: Logger
             private set
 
         lateinit var twipVersion: String

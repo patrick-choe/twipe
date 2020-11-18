@@ -36,5 +36,4 @@ cache:
     - '$HOME/.gradle'
 
 install:
-  - ./gradlew test
-  - ./gradlew publishToMavenLocal
+  - ./gradlew cleam publishToMavenLocal

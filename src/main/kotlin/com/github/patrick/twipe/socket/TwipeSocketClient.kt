@@ -21,7 +21,7 @@
 package com.github.patrick.twipe.socket
 
 import com.github.patrick.twipe.event.AsyncTwipDonateEvent
-import com.github.patrick.twipe.plugin.TwipePlugin
+import com.github.patrick.twipe.plugin.TwipePlugin.Companion.logger
 import com.github.patrick.twipe.plugin.TwipePlugin.Companion.timer
 import com.github.patrick.twipe.plugin.TwipePlugin.Companion.twipVersion
 import com.google.gson.JsonParser
@@ -63,11 +63,11 @@ internal class TwipeSocketClient(streamer: String, key: String) {
         }.createSocket(twipAddress.format(key, twipVersion)).apply {
             addListener(object : WebSocketAdapter() {
                 override fun onConnected(websocket: WebSocket, headers: MutableMap<String, MutableList<String>>) {
-                    TwipePlugin.twipeLogger.info("Connected to twip - $streamer")
+                    logger.info("Connected to twip - $streamer")
                 }
 
                 override fun onDisconnected(websocket: WebSocket, serverCloseFrame: WebSocketFrame, clientCloseFrame: WebSocketFrame, closedByServer: Boolean) {
-                    TwipePlugin.twipeLogger.warning("Disconnected from Twip - $streamer")
+                    logger.warning("Disconnected from Twip - $streamer")
                     TwipeSocketClient(streamer, key)
                 }
 

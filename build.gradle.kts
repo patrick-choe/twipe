@@ -34,7 +34,7 @@ plugins {
 }
 
 group = "com.github.patrick-mc"
-version = "1.0.1"
+version = "1.0.2"
 
 repositories {
     maven("https://repo.maven.apache.org/maven2/")
@@ -98,7 +98,7 @@ tasks {
 
         if (System.getProperty("os.name").startsWith("Windows")) {
             val fileName = "${project.name.capitalize()}.jar"
-            val pluginsDir = "W:\\Servers\\1.16.3\\plugins"
+            val pluginsDir = "W:\\Servers\\1.16.4\\plugins"
             val updateDir = "$pluginsDir\\update"
 
             rename {
@@ -179,5 +179,4 @@ try {
         sign(tasks["sourcesJar"], tasks["dokkaJar"], tasks["shadowJar"])
         sign(publishing.publications["twipe"])
     }
-} catch (ignored: MissingPropertyException) {
-}
+} catch (ignored: MissingPropertyException) {}

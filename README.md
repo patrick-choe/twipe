@@ -1,8 +1,25 @@
 # Twipe
 
-A twip library for Bukkit
+###### (ko)
 
-[Javadoc.io](https://www.javadoc.io/doc/com.github.patrick-mc/twipe/latest/index.html) to see Javadoc online!
+Bukkit 서버용 Twip (후원 플랫폼) 라이브러리
+
+## 사용 방법
+
+### 플러그인 개발자
+
+1. 개발 환경에서 의존성으로 이 플러그인으로 추가해주세요.
+2. Bukkit 리스너에서 `AsyncTwipDonateEvent` 이벤트를 받아주세요.
+
+### 서버 운영자
+
+1. 이 플러그인을 포함한 상태로 1회 이상 서버를 열어주세요.
+2. 플러그인의 `config.yml` 파일을 열고 형식에 맞게 수정해주세요.
+3. 재미있게 플레이해주세요!
+
+###### (en)
+
+A Twip (Donation Platform) library for Bukkit server
 
 ## How to use
 
@@ -31,7 +48,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.patrick-mc:twipe:1.0'
+    implementation 'com.github.patrick-mc:twipe:1.0.2'
 }
 ```
 
@@ -47,6 +64,6 @@ allprojects {
 
 ```kotlin
 dependencies {
-    implementation("com.github.patrick-mc:twipe:1.0")
+    implementation("com.github.patrick-mc:twipe:1.0.2")
 }
 ```
