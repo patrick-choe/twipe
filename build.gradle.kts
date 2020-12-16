@@ -23,18 +23,17 @@ import groovy.lang.MissingPropertyException
 import org.gradle.jvm.tasks.Jar
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.net.URL
 
 plugins {
     `maven-publish`
     signing
-    kotlin("jvm") version "1.4.10"
+    kotlin("jvm") version "1.4.21"
     id("com.github.johnrengelman.shadow") version "6.1.0"
-    id("org.jetbrains.dokka") version "1.4.10"
+    id("org.jetbrains.dokka") version "1.4.20"
 }
 
 group = "com.github.patrick-mc"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     maven("https://repo.maven.apache.org/maven2/")
@@ -44,8 +43,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib-jdk8"))
+
     compileOnly("org.spigotmc:spigot-api:1.8-R0.1-SNAPSHOT")
+
     implementation("com.neovisionaries:nv-websocket-client:2.10")
 }
 
@@ -57,10 +58,10 @@ tasks {
     withType<DokkaTask> {
         dokkaSourceSets {
             named("main") {
-                displayName.set("Twipe")
+                displayName.set(rootProject.name)
                 sourceLink {
                     localDirectory.set(file("src/main/kotlin"))
-                    remoteUrl.set(URL("https://github.com/patrick-mc/twipe/tree/master/src/main/kotlin"))
+                    remoteUrl.set(uri("https://github.com/patrick-mc/${rootProject.name}/tree/master/src/main/kotlin").toURL())
                     remoteLineSuffix.set("#L")
                 }
             }
@@ -93,10 +94,10 @@ tasks {
         }
     }
 
-    create<Copy>("distJar") {
-        from(shadowJar)
+    if (System.getProperty("os.name").startsWith("Windows")) {
+        create<Copy>("distJar") {
+            from(shadowJar)
 
-        if (System.getProperty("os.name").startsWith("Windows")) {
             val fileName = "${project.name.capitalize()}.jar"
             val pluginsDir = "W:\\Servers\\1.16.4\\plugins"
             val updateDir = "$pluginsDir\\update"
@@ -144,7 +145,7 @@ try {
                 pom {
                     name.set("twipe")
                     description.set("A twip library for Bukkit")
-                    url.set("https://github.com/patrick-mc/twipe")
+                    url.set("https://github.com/patrick-mc/${rootProject.name}")
 
                     licenses {
                         license {
@@ -165,9 +166,9 @@ try {
                     }
 
                     scm {
-                        connection.set("scm:git:git://github.com/patrick-mc/twipe.git")
-                        developerConnection.set("scm:git:ssh://github.com:patrick-mc/twipe.git")
-                        url.set("https://github.com/patrick-mc/twipe")
+                        connection.set("scm:git:git://github.com/patrick-mc/${rootProject.name}.git")
+                        developerConnection.set("scm:git:ssh://github.com:patrick-mc/${rootProject.name}.git")
+                        url.set("https://github.com/patrick-mc/${rootProject.name}")
                     }
                 }
             }

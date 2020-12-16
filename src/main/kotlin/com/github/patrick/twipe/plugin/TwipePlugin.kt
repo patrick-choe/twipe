@@ -41,8 +41,14 @@ class TwipePlugin : JavaPlugin() {
             val keys = getKeys(false)
             val count = keys.count()
             keys.forEachIndexed { index, streamer ->
+                val key = getString(streamer).let { input ->
+                    "(?<=twip.kr/widgets/alertbox/).*".toPattern().matcher(input).run {
+                        if (find()) group() else input
+                    }
+                }
+
                 logger.info("Loading ${index + 1} / $count - $streamer")
-                TwipeSocketClient(streamer, getString(streamer))
+                TwipeSocketClient(streamer, key)
             }
             logger.info("Loaded $count streamers")
         }

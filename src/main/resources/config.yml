@@ -17,22 +17,22 @@
 # Contact me on <mailpatrickkr@gmail.com>
 
 # (ko)
-# 스트리머의 이름과 트윕 alert box 의 고유 키를 넣어주세요!
+# 스트리머의 이름과 트윕 alert box 의 고유 키 또는 url 을 넣어주세요!
 #
 # 예시 사용 방법:
 # twip-version: 1.1.59
 # keys:
 #   PatrickKR: ABCDE12345
-#   foobar: 12345ABCDE
+#   foobar: https://twip.kr/widgets/alertbox/ABCDE12345
 #
 # (en)
-# Put streamer name and unique key from twip alert box here
+# Put streamer name and unique key or url from twip alert box here
 #
 # Sample usage:
 # twip-version: 1.1.59
 # keys:
 #   PatrickKR: ABCDE12345
-#   foobar: 12345ABCDE
+#   foobar: https://twip.kr/widgets/alertbox/ABCDE12345
 
 twip-version: 1.1.59
 keys:
