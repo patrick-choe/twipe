@@ -91,17 +91,19 @@ tasks {
     }
 
     create<Copy>("distJar") {
-        from(shadowJar)
+        if (System.getProperty("os.name").startsWith("Windows")) { // due to ci error
+            from(shadowJar)
 
-        val fileName = "${project.name.split("-").joinToString("") { it.capitalize() }}.jar"
+            val fileName = "${project.name.split("-").joinToString("") { it.capitalize() }}.jar"
 
-        rename {
-            fileName
+            rename {
+                fileName
+            }
+
+            var dest = file("W:/Servers/1.16.4/plugins")
+            if (File(dest, fileName).exists()) dest = File(dest, "update")
+            into(dest)
         }
-
-        var dest = file("W:/Servers/1.16.4/plugins")
-        if (File(dest, fileName).exists()) dest = File(dest, "update")
-        into(dest)
     }
 }
 
