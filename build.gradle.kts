@@ -1,21 +1,17 @@
 /*
- * Copyright (C) 2020 PatrickKR
+ * Copyright (C) 2021 PatrickKR
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- *
- * Contact me on <mailpatrickkr@gmail.com>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
@@ -27,13 +23,13 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     `maven-publish`
     signing
-    kotlin("jvm") version "1.4.21"
+    kotlin("jvm") version "1.4.31"
     id("com.github.johnrengelman.shadow") version "6.1.0"
-    id("org.jetbrains.dokka") version "1.4.20"
+    id("org.jetbrains.dokka") version "1.4.30"
 }
 
 group = "com.github.patrick-mc"
-version = "1.0.3"
+version = "1.1.0"
 
 repositories {
     maven("https://repo.maven.apache.org/maven2/")
@@ -43,11 +39,11 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+    compileOnly(kotlin("stdlib-jdk8"))
 
     compileOnly("org.spigotmc:spigot-api:1.8-R0.1-SNAPSHOT")
 
-    implementation("com.neovisionaries:nv-websocket-client:2.10")
+    implementation("com.neovisionaries:nv-websocket-client:2.14")
 }
 
 tasks {
@@ -94,31 +90,25 @@ tasks {
         }
     }
 
-    if (System.getProperty("os.name").startsWith("Windows")) {
-        create<Copy>("distJar") {
-            from(shadowJar)
+    create<Copy>("distJar") {
+        from(shadowJar)
 
-            val fileName = "${project.name.capitalize()}.jar"
-            val pluginsDir = "W:\\Servers\\1.16.4\\plugins"
-            val updateDir = "$pluginsDir\\update"
+        val fileName = "${project.name.split("-").joinToString("") { it.capitalize() }}.jar"
 
-            rename {
-                fileName
-            }
-
-            if (file("$pluginsDir\\$fileName").exists()) {
-                into(updateDir)
-            } else {
-                into(pluginsDir)
-            }
+        rename {
+            fileName
         }
+
+        var dest = file("W:/Servers/1.16.4/plugins")
+        if (File(dest, fileName).exists()) dest = File(dest, "update")
+        into(dest)
     }
 }
 
 try {
     publishing {
         publications {
-            create<MavenPublication>("twipe") {
+            create<MavenPublication>(rootProject.name) {
                 from(components["java"])
                 artifact(tasks["sourcesJar"])
                 artifact(tasks["dokkaJar"])
@@ -143,14 +133,14 @@ try {
                 }
 
                 pom {
-                    name.set("twipe")
+                    name.set(rootProject.name)
                     description.set("A twip library for Bukkit")
                     url.set("https://github.com/patrick-mc/${rootProject.name}")
 
                     licenses {
                         license {
-                            name.set("GNU General Public License v2.0")
-                            url.set("https://opensource.org/licenses/gpl-2.0.php")
+                            name.set("Apache License, Version 2.0")
+                            url.set("http://www.apache.org/licenses/LICENSE-2.0")
                         }
                     }
 
@@ -178,6 +168,6 @@ try {
     signing {
         isRequired = true
         sign(tasks["sourcesJar"], tasks["dokkaJar"], tasks["shadowJar"])
-        sign(publishing.publications["twipe"])
+        sign(publishing.publications[rootProject.name])
     }
 } catch (ignored: MissingPropertyException) {}

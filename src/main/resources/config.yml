@@ -1,38 +1,42 @@
-# Copyright (C) 2020 PatrickKR
+# Copyright (C) 2021 PatrickKR
 #
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-#
-# Contact me on <mailpatrickkr@gmail.com>
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 # (ko)
-# 스트리머의 이름과 트윕 alert box 의 고유 키 또는 url 을 넣어주세요!
+# https://twip.kr/dashboard/security 를 방문하여 id 와 token 값을 가져와주세요!
 #
 # 예시 사용 방법:
-# twip-version: 1.1.59
-# keys:
-#   PatrickKR: ABCDE12345
-#   foobar: https://twip.kr/widgets/alertbox/ABCDE12345
+# twip-version: 1.1.61
+# streamers:
+#   PatrickKR:
+#     id: ABCDE12345
+#     token: xxxxxxxxxxxxxxxx
+#   foobar:
+#     id: 12345ABCDE
+#     token: xxxxxxxxxxxxxxxx
 #
 # (en)
-# Put streamer name and unique key or url from twip alert box here
+# Visit https://twip.kr/dashboard/security to get id & token!
 #
 # Sample usage:
-# twip-version: 1.1.59
-# keys:
-#   PatrickKR: ABCDE12345
-#   foobar: https://twip.kr/widgets/alertbox/ABCDE12345
+# twip-version: 1.1.61
+# streamers:
+#   PatrickKR:
+#     id: ABCDE12345
+#     token: xxxxxxxxxxxxxxxx
+#   foobar:
+#     id: 12345ABCDE
+#     token: xxxxxxxxxxxxxxxx
 
-twip-version: 1.1.59
-keys:
+twip-version: 1.1.61
+streamers:

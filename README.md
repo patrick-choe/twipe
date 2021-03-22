@@ -9,7 +9,7 @@ Bukkit 서버용 Twip (후원 플랫폼) 라이브러리
 ### 플러그인 개발자
 
 1. 개발 환경에서 의존성으로 이 플러그인으로 추가해주세요.
-2. Bukkit 리스너에서 `AsyncTwipDonateEvent` 이벤트를 받아주세요.
+2. Bukkit 리스너에서 Twipe 관련 이벤트를 받아주세요 (com.github.patrick.twipe.event 패키지).
 
 ### 서버 운영자
 
@@ -26,7 +26,7 @@ A Twip (Donation Platform) library for Bukkit server
 ### For developers
 
 1. Add this plugin as a dependency.
-2. Listen to AsyncTwipDonateEvent (Using bukkit listeners).
+2. Listen to Twipe Events (in com.github.patrick.twipe.event package, Using bukkit listeners).
 
 ### For server owners
 
@@ -48,7 +48,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.patrick-mc:twipe:1.0.3'
+    implementation 'com.github.patrick-mc:twipe:1.1.0'
 }
 ```
 
@@ -64,6 +64,6 @@ allprojects {
 
 ```kotlin
 dependencies {
-    implementation("com.github.patrick-mc:twipe:1.0.3")
+    implementation("com.github.patrick-mc:twipe:1.1.0")
 }
 ```

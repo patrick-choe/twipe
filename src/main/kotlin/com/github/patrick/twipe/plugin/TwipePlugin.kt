@@ -1,27 +1,24 @@
 /*
- * Copyright (C) 2020 PatrickKR
+ * Copyright (C) 2021 PatrickKR
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- *
- * Contact me on <mailpatrickkr@gmail.com>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package com.github.patrick.twipe.plugin
 
 import com.github.patrick.twipe.socket.TwipeSocketClient
 import org.bukkit.plugin.java.JavaPlugin
+import java.net.URLEncoder
 import java.util.Timer
 import java.util.logging.Logger
 
@@ -33,35 +30,42 @@ class TwipePlugin : JavaPlugin() {
      * Called on startup
      */
     override fun onLoad() {
-        TwipePlugin.logger = logger
-        timer = Timer()
         saveDefaultConfig()
-        twipVersion = requireNotNull(config.getString("twip-version"))
-        requireNotNull(config.getConfigurationSection("keys")).apply {
-            val keys = getKeys(false)
-            val count = keys.count()
-            keys.forEachIndexed { index, streamer ->
-                val key = getString(streamer).let { input ->
-                    "(?<=twip.kr/widgets/alertbox/).*".toPattern().matcher(input).run {
-                        if (find()) group() else input
-                    }
+
+        pluginLogger = logger
+        timer = Timer()
+        twipVersion = config.getString("twip-version")
+
+        try {
+            config.getConfigurationSection("streamers").apply {
+                val streamers = getKeys(false)
+                val count = streamers.count()
+
+                streamers.forEachIndexed { index, streamer ->
+                    val section = getConfigurationSection(streamer)
+                    val key = section.getString("id")
+                    val token = URLEncoder.encode(section.getString("token"), Charsets.UTF_8)
+
+                    logger.info("Loading ${index + 1} / $count - $streamer")
+                    TwipeSocketClient(streamer, key, token)
                 }
 
-                logger.info("Loading ${index + 1} / $count - $streamer")
-                TwipeSocketClient(streamer, key)
+                logger.info("Done loading $count streamers")
             }
-            logger.info("Loaded $count streamers")
+        } catch (throwable: Throwable) {
+            logger.info("Caught exception while reading configuration. Please check config.yml.")
+            pluginLoader.disablePlugin(this)
         }
     }
 
     internal companion object {
-        lateinit var logger: Logger
+        internal lateinit var pluginLogger: Logger
             private set
 
-        lateinit var twipVersion: String
+        internal lateinit var timer: Timer
             private set
 
-        lateinit var timer: Timer
+        internal lateinit var twipVersion: String
             private set
     }
 }
