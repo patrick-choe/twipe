@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # (ko)
-# https://twip.kr/dashboard/security 를 방문하여 id 와 token 값을 가져와주세요!
+# https://twip.kr/dashboard/security 를 방문하여 alert box 의 id 와 token 값을 가져와주세요!
 #
 # 예시 사용 방법:
 # twip-version: 1.1.61
@@ -26,7 +26,7 @@
 #     token: xxxxxxxxxxxxxxxx
 #
 # (en)
-# Visit https://twip.kr/dashboard/security to get id & token!
+# Visit https://twip.kr/dashboard/security to get id of alert box & token!
 #
 # Sample usage:
 # twip-version: 1.1.61

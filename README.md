@@ -13,7 +13,7 @@ Bukkit 서버용 Twip (후원 플랫폼) 라이브러리
 
 ### 서버 운영자
 
-1. 이 플러그인을 포함한 상태로 1회 이상 서버를 열어주세요. [noonmaru](https://github.com/noonmaru) 님의 [Kotlin Plugin](https://github.com/noonmaru/kotlin-plugin) 을 의존성으로 갖습니다.
+1. 이 플러그인을 포함한 상태로 1회 이상 서버를 열어주세요. [monun](https://github.com/monun) 님의 [Kotlin Plugin](https://github.com/monun/kotlin-plugin) 을 의존성으로 갖습니다.
 2. 플러그인의 [`config.yml` 파일을 열고 형식에 맞게 수정](https://github.com/patrick-mc/twipe/blob/master/src/main/resources/config.yml) 해주세요.
 3. 재미있게 플레이해주세요!
 
@@ -48,7 +48,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.patrick-mc:twipe:1.1.0'
+    implementation 'com.github.patrick-mc:twipe:1.1.1'
 }
 ```
 
@@ -64,6 +64,6 @@ allprojects {
 
 ```kotlin
 dependencies {
-    implementation("com.github.patrick-mc:twipe:1.1.0")
+    implementation("com.github.patrick-mc:twipe:1.1.1")
 }
 ```

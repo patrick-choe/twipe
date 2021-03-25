@@ -14,7 +14,7 @@
 
 name: Twipe
 main: com.github.patrick.twipe.plugin.TwipePlugin
-version: "1.1.0"
+version: "1.1.1"
 api-version: "1.13"
 depend: [ Kotlin ]
 load: STARTUP

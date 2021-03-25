@@ -74,6 +74,11 @@ internal class TwipeSocketClient(streamer: String, key: String, token: String) {
 
                 override fun onDisconnected(websocket: WebSocket, serverCloseFrame: WebSocketFrame, clientCloseFrame: WebSocketFrame, closedByServer: Boolean) {
                     TwipePlugin.pluginLogger.warning("Disconnected from Twip - $streamer")
+
+                    runCatching {
+                        disconnect()
+                    }
+
                     TwipeSocketClient(streamer, key, token)
                 }
 
@@ -178,16 +183,29 @@ internal class TwipeSocketClient(streamer: String, key: String, token: String) {
                                         }
 
                                         "version not match" -> { // twip outdated
+                                            runCatching {
+                                                disconnect()
+                                            }
+
                                             throw RuntimeException("Current version ${TwipePlugin.twipVersion} not supported." +
                                                     "Please update plugin, or contact developer for help.")
                                         }
 
                                         "TOKEN_EXPIRED" -> { // twip token expired
+                                            runCatching {
+                                                disconnect()
+                                            }
+
                                             throw RuntimeException("$streamer's token has expired. Please get a new token")
                                         }
 
                                         "reload" -> { // twip reload
                                             TwipePlugin.pluginLogger.info("Reconnecting to Twip - $streamer")
+
+                                            runCatching {
+                                                disconnect()
+                                            }
+
                                             TwipeSocketClient(streamer, key, token)
                                         }
                                     }
@@ -263,7 +281,7 @@ internal class TwipeSocketClient(streamer: String, key: String, token: String) {
 
                 val rewardId = slotMachine["reward_id"].asString.toLong()
 
-                SlotMachineData(slotMachineConfig, result, items, rewardId)
+                SlotMachineData(slotMachineConfig, result - 1, items, rewardId)
             }
 
         @JvmStatic

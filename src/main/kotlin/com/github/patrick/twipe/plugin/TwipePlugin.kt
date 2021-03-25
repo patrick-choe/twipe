@@ -44,7 +44,7 @@ class TwipePlugin : JavaPlugin() {
                 streamers.forEachIndexed { index, streamer ->
                     val section = getConfigurationSection(streamer)
                     val key = section.getString("id")
-                    val token = URLEncoder.encode(section.getString("token"), Charsets.UTF_8)
+                    val token = URLEncoder.encode(section.getString("token"), "UTF-8")
 
                     logger.info("Loading ${index + 1} / $count - $streamer")
                     TwipeSocketClient(streamer, key, token)

@@ -4,13 +4,13 @@ package com.github.patrick.twipe.data
  * Slot Machine data
  *
  * @param config slot machine configuration
- * @param result the index of slot machine result. Note: index starts from 1, not 0.
+ * @param index the index of slot machine result.
  * @param items list of slot machine options
  * @param rewardId id of the slot machine
  */
 data class SlotMachineData internal constructor(
     val config: SlotMachineConfig,
-    val result: Long,
+    val index: Long,
     val items: Collection<String>,
     val rewardId: Long
 )
@@ -20,7 +20,7 @@ data class SlotMachineData internal constructor(
  *
  * @param duration slot machine duration
  * @param point pair of options and point (not sure yet)
- * @param sound not sure yet
+ * @param sound not sure yet (requires Twip Pro)
  */
 data class SlotMachineConfig internal constructor(
     val duration: Long,

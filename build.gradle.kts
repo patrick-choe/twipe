@@ -29,7 +29,7 @@ plugins {
 }
 
 group = "com.github.patrick-mc"
-version = "1.1.0"
+version = "1.1.1"
 
 repositories {
     maven("https://repo.maven.apache.org/maven2/")
@@ -48,7 +48,7 @@ dependencies {
 
 tasks {
     withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions.jvmTarget = "1.8"
     }
 
     withType<DokkaTask> {
